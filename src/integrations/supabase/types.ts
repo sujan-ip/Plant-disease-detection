@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      plant_ai_gateway_status: {
+        Row: {
+          blocked: boolean
+          id: string
+          safe_message: string | null
+          updated_at: string
+        }
+        Insert: {
+          blocked?: boolean
+          id: string
+          safe_message?: string | null
+          updated_at?: string
+        }
+        Update: {
+          blocked?: boolean
+          id?: string
+          safe_message?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       plant_analyses: {
         Row: {
           created_at: string

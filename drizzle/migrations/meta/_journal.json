@@ -8,6 +8,13 @@
       "when": 1792389490432,
       "tag": "0000_create_agricare_history",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792389898899,
+      "tag": "0001_persist_agricare_ai_status",
+      "breakpoints": true
     }
   ]
 }
