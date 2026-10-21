@@ -91,8 +91,8 @@ export async function analyzePlantPhotoServer(input: AnalysisInput, userClient: 
 function gatewayFailure(error: unknown) {
   const record = error && typeof error === "object" ? error as Record<string, unknown> : {};
   const status = typeof record.statusCode === "number" ? record.statusCode : typeof record.status === "number" ? record.status : undefined;
-  const body = typeof record.responseBody === "string" ? safeBodyMessage(record.responseBody) : "";
-  const original = typeof record.message === "string" ? record.message : "";
+  const body = typeof record["responseBody"] === "string" ? safeBodyMessage(record["responseBody"] as string) : "";
+  const original = typeof record["message"] === "string" ? record["message"] as string : "";
   if (status === 401) return { status, message: "Secure AI access is not configured correctly. Please contact the app owner." };
   if (status === 402 || status === 403) {
     const safe = body || original.replace(/^.*?(?:\d{3}:\s*)/, "").slice(0, 240);

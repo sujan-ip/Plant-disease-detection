@@ -91,7 +91,7 @@ function DashboardPage() {
           <ul className="mt-8 grid gap-4 md:grid-cols-2">
             {rows.map((row) => {
               const result = (row.result ?? {}) as Record<string, unknown>;
-              const nextSteps = asList(result.nextSteps).slice(0, 2);
+              const nextSteps = asList(result["nextSteps"]).slice(0, 2);
               return (
                 <li key={row.id}>
                   <Card className="h-full rounded-md border-border p-5 shadow-none">
