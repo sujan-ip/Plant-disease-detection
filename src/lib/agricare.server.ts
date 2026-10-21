@@ -3,7 +3,7 @@ import { Output, streamText } from "ai";
 import { z } from "zod";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
-import { createLovableAiGatewayRunIdFetch, getLovableAiGatewayRunId } from "./run-id.server";
+import { createLovableAiGatewayRunIdFetch } from "./run-id.server";
 
 const plantResultSchema = z.object({
   cropIdentified: z.string().nullable(),
@@ -87,11 +87,6 @@ export async function analyzePlantPhotoServer(input: AnalysisInput, userClient: 
   }
 }
 
-function getCurrentRequest(): Request {
-  // The AI handler is invoked only from an authenticated server function.
-  // TanStack exposes request context through the server runtime.
-  return new Request("https://agricare.local/analysis");
-}
 
 function gatewayFailure(error: unknown) {
   const record = error && typeof error === "object" ? error as Record<string, unknown> : {};
