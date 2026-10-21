@@ -3,7 +3,7 @@ import { Output, streamText } from "ai";
 import { z } from "zod";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
-import { createLovableAiGatewayRunIdFetch, getLovableAiGatewayRunId } from "./run-id.server";
+import { createLovableAiGatewayRunIdFetch } from "./run-id.server";
 
 const plantResultSchema = z.object({
   cropIdentified: z.string().nullable(),
@@ -29,8 +29,9 @@ export async function analyzePlantPhotoServer(input: AnalysisInput, userClient: 
   if (!apiKey) return { ok: false as const, message: "Secure plant analysis is not configured yet. Please contact the app owner." };
 
   try {
-    const request = getCurrentRequest();
-    const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
+    // Run-ID propagation: the gateway mints an ID on the first response and the
+    // run-id fetch wrapper resends it across follow-up steps of the same run.
+    const runIdFetch = createLovableAiGatewayRunIdFetch();
     const provider = createOpenAI({
       baseURL: "https://ai.gateway.lovable.dev/v1",
       apiKey,
@@ -86,17 +87,12 @@ export async function analyzePlantPhotoServer(input: AnalysisInput, userClient: 
   }
 }
 
-function getCurrentRequest(): Request {
-  // The AI handler is invoked only from an authenticated server function.
-  // TanStack exposes request context through the server runtime.
-  return new Request("https://agricare.local/analysis");
-}
 
 function gatewayFailure(error: unknown) {
   const record = error && typeof error === "object" ? error as Record<string, unknown> : {};
   const status = typeof record.statusCode === "number" ? record.statusCode : typeof record.status === "number" ? record.status : undefined;
-  const body = typeof record.responseBody === "string" ? safeBodyMessage(record.responseBody) : "";
-  const original = typeof record.message === "string" ? record.message : "";
+  const body = typeof record["responseBody"] === "string" ? safeBodyMessage(record["responseBody"] as string) : "";
+  const original = typeof record["message"] === "string" ? record["message"] as string : "";
   if (status === 401) return { status, message: "Secure AI access is not configured correctly. Please contact the app owner." };
   if (status === 402 || status === 403) {
     const safe = body || original.replace(/^.*?(?:\d{3}:\s*)/, "").slice(0, 240);
