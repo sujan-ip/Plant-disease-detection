@@ -29,8 +29,9 @@ export async function analyzePlantPhotoServer(input: AnalysisInput, userClient: 
   if (!apiKey) return { ok: false as const, message: "Secure plant analysis is not configured yet. Please contact the app owner." };
 
   try {
-    const request = getCurrentRequest();
-    const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
+    // Run-ID propagation: the gateway mints an ID on the first response and the
+    // run-id fetch wrapper resends it across follow-up steps of the same run.
+    const runIdFetch = createLovableAiGatewayRunIdFetch();
     const provider = createOpenAI({
       baseURL: "https://ai.gateway.lovable.dev/v1",
       apiKey,
