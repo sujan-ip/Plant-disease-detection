@@ -1,2 +1,2 @@
-- [ ] Finish AgriCare AI app: auth, photo analysis, fertilizer guidance, dashboard/history, about page, tests, and verification.
-- [ ] Answer user’s question about syncing/uploading the source code to GitHub.
+- [x] Finish AgriCare AI app: auth, photo analysis, fertilizer guidance, dashboard/history, about page, tests, and verification.
+- [x] Answer user's question about syncing/uploading the source code to GitHub.

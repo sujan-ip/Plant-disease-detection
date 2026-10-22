@@ -22,7 +22,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
           <nav aria-label="Main navigation" className="hidden items-center gap-1 md:flex">
             {navigation.map((item) => (
-              <Link key={item.to} to={item.to} className={({ isActive }) => `rounded-md px-3 py-2 text-sm transition-colors ${isActive ? "bg-accent font-semibold text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
+              <Link
+                key={item.to}
+                to={item.to}
+                className="rounded-md px-3 py-2 text-sm transition-colors text-muted-foreground hover:bg-muted hover:text-foreground"
+                activeProps={{ className: "bg-accent font-semibold text-primary" }}
+              >
                 {item.label}
               </Link>
             ))}
@@ -33,11 +38,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
         <nav aria-label="Mobile navigation" className="flex gap-1 overflow-x-auto border-t border-border px-4 py-2 md:hidden">
-          {navigation.map((item) => (
-            <Link key={item.to} to={item.to} className={({ isActive }) => `shrink-0 rounded-md px-3 py-1.5 text-xs ${isActive ? "bg-accent font-semibold text-primary" : "text-muted-foreground"}`}>
-              {item.label}
-            </Link>
-          ))}
+            {navigation.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="shrink-0 rounded-md px-3 py-1.5 text-xs text-muted-foreground"
+                activeProps={{ className: "bg-accent font-semibold text-primary" }}
+              >
+                {item.label}
+              </Link>
+            ))}
         </nav>
       </header>
       {children}
